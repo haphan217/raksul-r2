@@ -1,0 +1,64 @@
+.wrapper {
+  display: inline-flex;
+  flex-direction: column;
+  gap: var(--rk-space-1);
+}
+
+.label {
+  font-size: var(--rk-font-size-sm);
+  color: var(--rk-text-muted);
+}
+
+.selectContainer {
+  position: relative;
+  display: inline-flex;
+}
+
+.select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 100%;
+  padding: var(--rk-space-2) var(--rk-space-6) var(--rk-space-2)
+    var(--rk-space-3);
+  background: var(--rk-cell);
+  color: var(--rk-text);
+  border: 1px solid var(--rk-border);
+  border-radius: var(--rk-radius-1);
+  font-family: var(--rk-font-sans);
+  font-size: var(--rk-font-size-base);
+  line-height: 1.4;
+  cursor: pointer;
+  transition:
+    background-color var(--rk-transition-duration) ease,
+    border-color var(--rk-transition-duration) ease;
+}
+
+.select:hover:not(:disabled) {
+  background: var(--rk-highlight-weak);
+  border-color: var(--rk-text-muted);
+}
+
+.select:focus-visible {
+  outline: 2px solid var(--rk-focus-ring);
+  outline-offset: 2px;
+}
+
+.select:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.selectContainer::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: var(--rk-space-3);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 5px solid var(--rk-text-muted);
+  transform: translateY(-50%);
+  pointer-events: none;
+}

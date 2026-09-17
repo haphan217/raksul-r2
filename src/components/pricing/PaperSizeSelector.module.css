@@ -1,0 +1,16 @@
+.card {
+  min-width: 220px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rk-space-5, 24px);
+  min-height: 200px;
+}
+
+.actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: flex-end;
+}

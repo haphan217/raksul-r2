@@ -1,0 +1,29 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rk-space-3);
+  background: var(--rk-surface);
+  border: 1px solid var(--rk-border);
+  border-radius: var(--rk-radius-1);
+  padding: var(--rk-space-4);
+}
+
+.title {
+  margin: 0;
+  font-size: var(--rk-font-size-md);
+  font-weight: 600;
+  color: var(--rk-text-muted);
+}
+
+.body {
+  color: var(--rk-text);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--rk-space-2);
+  padding-top: var(--rk-space-3);
+  border-top: 1px solid var(--rk-border);
+}
