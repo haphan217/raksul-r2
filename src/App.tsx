@@ -1,122 +1,97 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useCallback, useMemo, useState } from "react";
+import { Button, Card } from "./components/ui";
+import { OrderSummary } from "./components/pricing/OrderSummary";
+import { PaperSizeSelector } from "./components/pricing/PaperSizeSelector";
+import { PriceTableSection } from "./components/pricing/PriceTableSection";
+import { usePriceColumns } from "./components/pricing/usePriceColumns";
+import { usePricingData } from "./hooks/usePricingData";
+import {
+  DEFAULT_PAPER_SIZE,
+  type CellAddress,
+  type PaperSize,
+  type PriceSelection,
+} from "./types/pricing";
+import { QUANTITY_COLUMN } from "./utils/priceTransformer";
+import { formatYen } from "./utils/formatNumber";
+import styles from "./App.module.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [paperSize, setPaperSize] = useState<PaperSize>(DEFAULT_PAPER_SIZE);
+  const [selected, setSelected] = useState<CellAddress | null>(null);
+
+  const {
+    columns: columnMeta,
+    rows,
+    loading,
+    error,
+    refetch,
+  } = usePricingData(paperSize);
+  const columns = usePriceColumns(columnMeta);
+
+  const handleApply = useCallback((size: PaperSize) => {
+    setPaperSize(size);
+    setSelected(null);
+  }, []);
+
+  /** Resolve the selected address against current data; drops stale selections. */
+  const selection = useMemo<PriceSelection | null>(() => {
+    if (!selected) return null;
+    const row = rows.find((r) => r.key === selected.rowKey);
+    const column = columnMeta.find((c) => c.key === selected.columnKey);
+    const price = row?.[selected.columnKey];
+    const quantity = row?.[QUANTITY_COLUMN];
+
+    if (
+      typeof price !== "number" ||
+      typeof quantity !== "number" ||
+      column?.businessDay === undefined
+    ) {
+      return null;
+    }
+
+    return { paperSize, quantity, businessDay: column.businessDay, price };
+  }, [columnMeta, paperSize, rows, selected]);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <main className={styles.page}>
+      <h1 className={styles.heading}>Raksul Price Table</h1>
 
-      <div className="ticks"></div>
+      <div className={styles.layout}>
+        <PaperSizeSelector
+          value={paperSize}
+          onApply={handleApply}
+          disabled={loading}
+        />
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
+        <Card title="Price table" className={styles.tableCard}>
+          <div className={styles.tableBody}>
+            <OrderSummary selection={selection} />
+            <PriceTableSection
+              columns={columns}
+              data={rows}
+              loading={loading}
+              error={error}
+              selected={selection ? selected : null}
+              onSelect={setSelected}
+              onRetry={refetch}
+            />
+          </div>
+        </Card>
+      </div>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      <div className={styles.footerBar}>
+        <span className={styles.orderPrice}>
+          Order price:{" "}
+          <span className={styles.orderPriceValue}>
+            {selection ? formatYen(selection.price) : "—"}
+          </span>
+        </span>
+        <Button variant="primary" disabled={!selection}>
+          Cart
+        </Button>
+      </div>
+    </main>
+  );
 }
 
-export default App
+export default App;

@@ -1,0 +1,47 @@
+/* Design tokens — grayscale wireframe aesthetic */
+:root {
+  /* Color: surfaces */
+  --rk-bg: #ffffff;
+  --rk-surface: #e0e0e0;
+  --rk-card: #d9d9d9;
+  --rk-cell: #ffffff;
+
+  /* Color: borders & highlights */
+  --rk-border: #c9c9c9;
+  --rk-highlight-weak: #ececec;
+  --rk-highlight-mid: #d2d2d2;
+  --rk-highlight-strong: #7a7a7a;
+  --rk-highlight-strong-text: #ffffff;
+
+  /* Color: text */
+  --rk-text: #1a1a1a;
+  --rk-text-muted: #5c5c5c;
+
+  /* Color: focus */
+  --rk-focus-ring: #2563eb;
+
+  /* Radius */
+  --rk-radius-0: 0px;
+  --rk-radius-1: 2px;
+
+  /* Spacing scale */
+  --rk-space-1: 4px;
+  --rk-space-2: 8px;
+  --rk-space-3: 12px;
+  --rk-space-4: 16px;
+  --rk-space-5: 24px;
+  --rk-space-6: 32px;
+
+  /* Typography */
+  --rk-font-sans:
+    system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial,
+    sans-serif;
+  --rk-font-size-sm: 12px;
+  --rk-font-size-base: 14px;
+  --rk-font-size-md: 16px;
+  --rk-font-size-lg: 20px;
+  --rk-font-size-xl: 24px;
+
+  /* Motion */
+  --rk-transition-duration: 120ms;
+}
