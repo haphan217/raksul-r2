@@ -5,8 +5,6 @@ import {
   type PricesResponse,
 } from "../types/pricing";
 
-const ENDPOINT = "https://us-central1-fe-ws-test.cloudfunctions.net/prices";
-
 /** Process-lifetime cache keyed by normalized paper size. */
 const cache = new Map<PaperSize, PricesResponse>();
 
@@ -46,7 +44,7 @@ export async function fetchPrices(
   if (cached) return cached;
 
   const response = await fetch(
-    `${ENDPOINT}?paper_size=${encodeURIComponent(size)}`,
+    `${import.meta.env.VITE_DEV_API_URL}?paper_size=${encodeURIComponent(size)}`,
     { signal },
   );
 
