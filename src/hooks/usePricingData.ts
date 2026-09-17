@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
-import { fetchPrices, getCached } from "../services/pricingApi";
-import { type PriceTableData, transformPrices } from "../utils/priceTransformer";
+import { fetchPrices, getCached } from "@/services/pricingApi";
+import { type PriceTableData, transformPrices } from "@/utils/priceTransformer";
 
-import type { PaperSize, PricesResponse } from "../types/pricing";
+import type { PaperSize, PricesResponse } from "@/types/pricing";
 interface PricingState {
   /** Request this snapshot belongs to; stale snapshots are ignored on render. */
   key: string;

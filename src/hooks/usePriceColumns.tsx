@@ -1,9 +1,10 @@
 import { useMemo } from "react";
-import type { TableColumn, TableRow } from "../../types/pricing";
-import type { PriceColumnMeta } from "../../utils/priceTransformer";
-import { formatNumber } from "../../utils/formatNumber";
-import styles from "./priceColumns.module.css";
 
+import { formatNumber } from "@/utils/formatNumber";
+import styles from "./usePriceColumns.module.css";
+
+import type { TableColumn, TableRow } from "@/types/pricing";
+import type { PriceColumnMeta } from "@/utils/priceTransformer";
 /**
  * Lifts plain column metadata into renderable table columns.
  * All formatting and JSX lives here so the transformer stays pure data.

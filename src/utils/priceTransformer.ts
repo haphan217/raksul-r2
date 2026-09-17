@@ -1,4 +1,4 @@
-import type { PriceEntry, PricesResponse, TableRow } from "../types/pricing";
+import type { PriceEntry, PricesResponse, TableRow } from "@/types/pricing";
 
 /** Column key holding the quantity axis */
 export const QUANTITY_COLUMN = "quantity";

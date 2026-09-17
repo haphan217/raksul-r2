@@ -1,17 +1,17 @@
 import { useCallback, useMemo, useState } from "react";
-import { Card } from "./components/ui";
-import { OrderSummary } from "./components/pricing/OrderSummary";
-import { PaperSizeSelector } from "./components/pricing/PaperSizeSelector";
-import { PriceTableSection } from "./components/pricing/PriceTableSection";
-import { usePriceColumns } from "./components/pricing/usePriceColumns";
-import { usePricingData } from "./hooks/usePricingData";
+import { Card } from "@/components/ui";
+import { OrderSummary } from "@/components/pricing/OrderSummary";
+import { PaperSizeSelector } from "@/components/pricing/PaperSizeSelector";
+import { PriceTableSection } from "@/components/pricing/PriceTableSection";
+import { usePriceColumns } from "@/hooks/usePriceColumns";
+import { usePricingData } from "@/hooks/usePricingData";
 import {
   DEFAULT_PAPER_SIZE,
   type CellAddress,
   type PaperSize,
   type PriceSelection,
-} from "./types/pricing";
-import { QUANTITY_COLUMN } from "./utils/priceTransformer";
+} from "@/types/pricing";
+import { QUANTITY_COLUMN } from "@/utils/priceTransformer";
 import styles from "./App.module.css";
 
 function App() {

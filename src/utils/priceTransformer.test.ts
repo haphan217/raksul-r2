@@ -8,7 +8,7 @@ import {
   transformPrices,
 } from "./priceTransformer";
 
-import type { PriceEntry, PricesResponse } from "../types/pricing";
+import type { PriceEntry, PricesResponse } from "@/types/pricing";
 
 const entry = (
   quantity: number,

@@ -1,7 +1,7 @@
 import { memo } from 'react';
-import { Button, SkeletonLoader } from '../ui';
-import { ReusableTable } from '../table/ReusableTable';
-import type { CellAddress, TableColumn, TableRow } from '../../types/pricing';
+import { Button, SkeletonLoader } from '@/components/ui';
+import { ReusableTable } from '@/components/ReusableTable';
+import type { CellAddress, TableColumn, TableRow } from '@/types/pricing';
 import styles from './PriceTableSection.module.css';
 
 export interface PriceTableSectionProps {

@@ -1,7 +1,7 @@
 import { memo, useCallback } from "react";
-import { Select } from "../ui";
-import { PAPER_SIZES, type PaperSize } from "../../types/pricing";
-import { normalizePaperSize } from "../../services/pricingApi";
+import { Select } from "@/components/ui";
+import { PAPER_SIZES, type PaperSize } from "@/types/pricing";
+import { normalizePaperSize } from "@/services/pricingApi";
 import styles from "./PaperSizeSelector.module.css";
 
 const OPTIONS = PAPER_SIZES.map((size) => ({ value: size, label: size }));

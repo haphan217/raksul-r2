@@ -1,8 +1,8 @@
-import { memo } from 'react';
-import { Button } from '../ui';
-import { formatNumber } from '../../utils/formatNumber';
-import type { PaperSize, PriceSelection } from '../../types/pricing';
-import styles from './OrderSummary.module.css';
+import { memo } from "react";
+import { Button } from "@/components/ui";
+import { formatNumber } from "@/utils/formatNumber";
+import type { PaperSize, PriceSelection } from "@/types/pricing";
+import styles from "./OrderSummary.module.css";
 
 export interface OrderSummaryProps {
   selection: PriceSelection | null;
@@ -14,7 +14,7 @@ function OrderSummaryBase({ selection, paperSize }: OrderSummaryProps) {
 
   return (
     <section
-      className={`${styles.band} ${empty ? styles.bandEmpty : ''}`}
+      className={`${styles.band} ${empty ? styles.bandEmpty : ""}`}
       role="status"
       aria-live="polite"
     >
@@ -31,17 +31,17 @@ function OrderSummaryBase({ selection, paperSize }: OrderSummaryProps) {
             </span>
             <span className={styles.dot} aria-hidden="true" />
             <span className={styles.fact}>
-              Qty:{' '}
+              Qty:{" "}
               <strong className={styles.strong}>
                 {formatNumber(selection.quantity)}
               </strong>
             </span>
             <span className={styles.dot} aria-hidden="true" />
             <span className={styles.fact}>
-              Delivery:{' '}
+              Delivery:{" "}
               <strong className={styles.strong}>
-                {selection.businessDay}{' '}
-                {selection.businessDay === 1 ? 'Business Day' : 'Business Days'}
+                {selection.businessDay}{" "}
+                {selection.businessDay === 1 ? "Business Day" : "Business Days"}
               </strong>
             </span>
           </div>
@@ -53,7 +53,7 @@ function OrderSummaryBase({ selection, paperSize }: OrderSummaryProps) {
           <span className={styles.totalLabel}>Total price (Tax incl.)</span>
           <span className={styles.totalValue}>
             <span className={styles.yen}>¥</span>
-            {selection ? formatNumber(selection.price) : '—'}
+            {selection ? formatNumber(selection.price) : "—"}
           </span>
         </div>
         <Button variant="primary" disabled={empty} className={styles.cart}>

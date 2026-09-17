@@ -3,7 +3,7 @@ import {
   PAPER_SIZES,
   type PaperSize,
   type PricesResponse,
-} from "../types/pricing";
+} from "@/types/pricing";
 
 /** Process-lifetime cache keyed by normalized paper size. */
 const cache = new Map<PaperSize, PricesResponse>();

@@ -1,10 +1,10 @@
 import { memo, useCallback, useMemo, useState } from "react";
 
-import { Button } from "../ui";
+import { Button } from "@/components/ui";
 import styles from "./ReusableTable.module.css";
 
-import type { CellAddress, TableColumn, TableRow } from "../../types/pricing";
-import { QUANTITY_COLUMN } from "../../utils/priceTransformer";
+import type { CellAddress, TableColumn, TableRow } from "@/types/pricing";
+import { QUANTITY_COLUMN } from "@/utils/priceTransformer";
 export interface ReusableTableProps {
   columns: TableColumn<TableRow>[];
   data: TableRow[];
