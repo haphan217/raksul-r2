@@ -6,7 +6,7 @@ import {
   QUANTITY_COLUMN,
   rowKeyOf,
   transformPrices,
-} from "./priceTransformer";
+} from "../priceTransformer";
 
 import type { PriceEntry, PricesResponse } from "@/types/pricing";
 

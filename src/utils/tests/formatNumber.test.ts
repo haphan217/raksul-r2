@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 
-import { formatNumber, formatYen } from "./formatNumber";
+import { formatNumber, formatYen } from "../formatNumber";
 
 describe("formatNumber", () => {
   it.each([
