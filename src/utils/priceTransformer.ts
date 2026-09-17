@@ -53,7 +53,7 @@ export function transformPrices(
       .sort((a, b) => a - b)
       .map((day) => ({
         key: columnKeyOf(day),
-        label: `${day} ${day === 1 ? "business day" : "business days"}`,
+        label: `${day} ${day === 1 ? "Day" : "Days"}`,
         businessDay: day,
       })),
   ];

@@ -1,47 +1,66 @@
-import { memo } from "react";
+import { memo } from 'react';
+import { Button } from '../ui';
+import { formatNumber } from '../../utils/formatNumber';
+import type { PaperSize, PriceSelection } from '../../types/pricing';
+import styles from './OrderSummary.module.css';
 
-import { formatNumber, formatYen } from "../../utils/formatNumber";
-import styles from "./OrderSummary.module.css";
-
-import type { PriceSelection } from "../../types/pricing";
 export interface OrderSummaryProps {
   selection: PriceSelection | null;
+  paperSize: PaperSize;
 }
 
-function OrderSummaryBase({ selection }: OrderSummaryProps) {
-  if (!selection) {
-    return (
-      <p className={styles.placeholder} role="status">
-        Select a price from the table to see order details.
-      </p>
-    );
-  }
-
-  const { paperSize, quantity, businessDay, price } = selection;
+function OrderSummaryBase({ selection, paperSize }: OrderSummaryProps) {
+  const empty = selection === null;
 
   return (
-    <div className={styles.summary} role="status" aria-live="polite">
-      <div className={styles.item}>
-        <div className={styles.term}>Paper size</div>
-        <div className={styles.value}>{paperSize}</div>
+    <section
+      className={`${styles.band} ${empty ? styles.bandEmpty : ''}`}
+      role="status"
+      aria-live="polite"
+    >
+      <div className={styles.details}>
+        <p className={styles.label}>Order summary</p>
+        {empty ? (
+          <p className={styles.hint}>
+            Select a price in the table to build your order.
+          </p>
+        ) : (
+          <div className={styles.facts}>
+            <span className={styles.fact}>
+              Size: <strong className={styles.strong}>{paperSize}</strong>
+            </span>
+            <span className={styles.dot} aria-hidden="true" />
+            <span className={styles.fact}>
+              Qty:{' '}
+              <strong className={styles.strong}>
+                {formatNumber(selection.quantity)}
+              </strong>
+            </span>
+            <span className={styles.dot} aria-hidden="true" />
+            <span className={styles.fact}>
+              Delivery:{' '}
+              <strong className={styles.strong}>
+                {selection.businessDay}{' '}
+                {selection.businessDay === 1 ? 'Business Day' : 'Business Days'}
+              </strong>
+            </span>
+          </div>
+        )}
       </div>
-      <div className={styles.item}>
-        <div className={styles.term}>Quantity</div>
-        <div className={styles.value}>{formatNumber(quantity)} sheets</div>
-      </div>
-      <div className={styles.item}>
-        <div className={styles.term}>Delivery</div>
-        <div className={styles.value}>
-          {businessDay} {businessDay === 1 ? "business day" : "business days"}
+
+      <div className={styles.totalGroup}>
+        <div className={styles.total}>
+          <span className={styles.totalLabel}>Total price (Tax incl.)</span>
+          <span className={styles.totalValue}>
+            <span className={styles.yen}>¥</span>
+            {selection ? formatNumber(selection.price) : '—'}
+          </span>
         </div>
+        <Button variant="primary" disabled={empty} className={styles.cart}>
+          Add to Cart
+        </Button>
       </div>
-      <div className={styles.item}>
-        <div className={styles.term}>Price</div>
-        <div className={`${styles.value} ${styles.price}`}>
-          {formatYen(price)}
-        </div>
-      </div>
-    </div>
+    </section>
   );
 }
 

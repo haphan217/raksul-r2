@@ -1,21 +1,22 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--rk-space-2);
+  gap: var(--rk-space-2, 8px);
+  width: 100%;
 }
 
 .bar {
   background: linear-gradient(
     90deg,
-    var(--rk-highlight-weak) 25%,
-    var(--rk-card) 50%,
-    var(--rk-highlight-weak) 75%
+    #eef2f7 0%,
+    #f8fafc 50%,
+    #eef2f7 100%
   );
   background-size: 200% 100%;
-  animation: rk-shimmer 1.2s ease-in-out infinite;
+  animation: shimmer 1.4s ease-in-out infinite;
 }
 
-@keyframes rk-shimmer {
+@keyframes shimmer {
   0% {
     background-position: 200% 0;
   }
@@ -27,6 +28,6 @@
 @media (prefers-reduced-motion: reduce) {
   .bar {
     animation: none;
-    background: var(--rk-highlight-weak);
+    background: #eef2f7;
   }
 }

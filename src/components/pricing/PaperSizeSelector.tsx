@@ -1,40 +1,37 @@
 import { memo, useCallback } from "react";
-
-import { normalizePaperSize } from "../../services/pricingApi";
+import { Select } from "../ui";
 import { PAPER_SIZES, type PaperSize } from "../../types/pricing";
-import { Card, Select } from "../ui";
+import { normalizePaperSize } from "../../services/pricingApi";
 import styles from "./PaperSizeSelector.module.css";
 
 const OPTIONS = PAPER_SIZES.map((size) => ({ value: size, label: size }));
 
 export interface PaperSizeSelectorProps {
   value: PaperSize;
-  onApply: (size: PaperSize) => void;
+  onChange: (size: PaperSize) => void;
   disabled?: boolean;
 }
 
 function PaperSizeSelectorBase({
   value,
-  onApply,
+  onChange,
   disabled = false,
 }: PaperSizeSelectorProps) {
   const handleChange = useCallback(
-    (next: string) => onApply(normalizePaperSize(next)),
-    [onApply],
+    (next: string) => onChange(normalizePaperSize(next)),
+    [onChange],
   );
 
   return (
-    <Card title="Select paper size" className={styles.card}>
-      <div className={styles.body}>
-        <Select
-          label="Paper size"
-          value={value}
-          options={OPTIONS}
-          onChange={handleChange}
-          disabled={disabled}
-        />
-      </div>
-    </Card>
+    <div className={styles.field}>
+      <Select
+        label="Paper size"
+        value={value}
+        options={OPTIONS}
+        onChange={handleChange}
+        disabled={disabled}
+      />
+    </div>
   );
 }
 

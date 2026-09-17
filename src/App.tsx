@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from "react";
-import { Button, Card } from "./components/ui";
+import { Card } from "./components/ui";
 import { OrderSummary } from "./components/pricing/OrderSummary";
 import { PaperSizeSelector } from "./components/pricing/PaperSizeSelector";
 import { PriceTableSection } from "./components/pricing/PriceTableSection";
@@ -12,7 +12,6 @@ import {
   type PriceSelection,
 } from "./types/pricing";
 import { QUANTITY_COLUMN } from "./utils/priceTransformer";
-import { formatYen } from "./utils/formatNumber";
 import styles from "./App.module.css";
 
 function App() {
@@ -28,10 +27,15 @@ function App() {
   } = usePricingData(paperSize);
   const columns = usePriceColumns(columnMeta);
 
-  const handleApply = useCallback((size: PaperSize) => {
+  const handlePaperSizeChange = useCallback((size: PaperSize) => {
     setPaperSize(size);
     setSelected(null);
   }, []);
+
+  const handleSelect = useCallback(
+    (address: CellAddress) => setSelected(address),
+    [],
+  );
 
   /** Resolve the selected address against current data; drops stale selections. */
   const selection = useMemo<PriceSelection | null>(() => {
@@ -53,44 +57,36 @@ function App() {
   }, [columnMeta, paperSize, rows, selected]);
 
   return (
-    <main className={styles.page}>
-      <h1 className={styles.heading}>Raksul Price Table</h1>
-
-      <div className={styles.layout}>
-        <PaperSizeSelector
-          value={paperSize}
-          onApply={handleApply}
-          disabled={loading}
-        />
-
-        <Card title="Price table" className={styles.tableCard}>
-          <div className={styles.tableBody}>
-            <OrderSummary selection={selection} />
-            <PriceTableSection
-              columns={columns}
-              data={rows}
-              loading={loading}
-              error={error}
-              selected={selection ? selected : null}
-              onSelect={setSelected}
-              onRetry={refetch}
-            />
+    <div className={styles.viewport}>
+      <Card className={styles.shell}>
+        <header className={styles.header}>
+          <div className={styles.titleGroup}>
+            <h1 className={styles.heading}>Printing Prices</h1>
+            <p className={styles.subtitle}>
+              Select paper size to view delivery and quantity options.
+            </p>
           </div>
-        </Card>
-      </div>
+          <PaperSizeSelector
+            value={paperSize}
+            onChange={handlePaperSizeChange}
+            disabled={loading}
+          />
+        </header>
 
-      <div className={styles.footerBar}>
-        <span className={styles.orderPrice}>
-          Order price:{" "}
-          <span className={styles.orderPriceValue}>
-            {selection ? formatYen(selection.price) : "—"}
-          </span>
-        </span>
-        <Button variant="primary" disabled={!selection}>
-          Cart
-        </Button>
-      </div>
-    </main>
+        <div className={styles.content}>
+          <OrderSummary selection={selection} paperSize={paperSize} />
+          <PriceTableSection
+            columns={columns}
+            data={rows}
+            loading={loading}
+            error={error}
+            selected={selection ? selected : null}
+            onSelect={handleSelect}
+            onRetry={refetch}
+          />
+        </div>
+      </Card>
+    </div>
   );
 }
 

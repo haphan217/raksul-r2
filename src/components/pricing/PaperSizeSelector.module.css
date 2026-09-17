@@ -1,16 +1,10 @@
-.card {
-  min-width: 220px;
+.field {
+  width: 100%;
+  max-width: 260px;
 }
 
-.body {
-  display: flex;
-  flex-direction: column;
-  gap: var(--rk-space-5, 24px);
-  min-height: 200px;
-}
-
-.actions {
-  margin-top: auto;
-  display: flex;
-  justify-content: flex-end;
+@media (max-width: 720px) {
+  .field {
+    max-width: none;
+  }
 }

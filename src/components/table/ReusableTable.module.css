@@ -1,84 +1,103 @@
 .wrapper {
   display: flex;
   flex-direction: column;
-  gap: var(--rk-space-4, 16px);
+  gap: var(--rk-space-5, 24px);
   width: 100%;
 }
 
 .scroller {
   width: 100%;
   overflow-x: auto;
-  background: var(--rk-card, #d9d9d9);
-  padding: var(--rk-space-4, 16px);
+  border: 1px solid var(--rk-border, #e2e8f0);
+  border-radius: var(--rk-radius-2, 10px);
+  background: var(--rk-surface, #fff);
 }
 
 .table {
   border-collapse: collapse;
   width: 100%;
-  min-width: 560px;
+  min-width: 640px;
   font-size: var(--rk-font-size-base, 14px);
-  color: var(--rk-text, #1a1a1a);
+  color: var(--rk-text-body, #334155);
 }
 
 .headCell,
 .cell {
-  border: 1px solid var(--rk-border, #c9c9c9);
+  border-bottom: 1px solid var(--rk-border, #e2e8f0);
+  border-right: 1px solid var(--rk-border, #e2e8f0);
   padding: var(--rk-space-3, 12px) var(--rk-space-4, 16px);
   background: var(--rk-cell, #fff);
-  text-align: center;
+  text-align: right;
   white-space: nowrap;
-  transition: background-color var(--rk-transition-duration, 120ms) ease;
+  font-variant-numeric: tabular-nums;
+  transition: background-color var(--rk-transition-duration, 140ms) ease;
+}
+
+.headCell:last-child,
+.cell:last-child {
+  border-right: none;
+}
+
+.table tbody tr:last-child .cell {
+  border-bottom: none;
 }
 
 .headCell {
-  font-weight: 600;
+  padding: var(--rk-space-4, 16px);
+  background: var(--rk-subtle, #f8fafc);
+  color: var(--rk-text, #0f172a);
+  font-weight: 700;
+  text-align: center;
 }
 
-/* Header of the row-header column. */
+/* Header above the row-header column. */
 .headCorner {
   text-align: left;
+  min-width: 128px;
+  position: sticky;
+  left: 0;
 }
-
+@media (max-width: 720px) {
+  .headCorner {
+    min-width: 0;
+  }
+}
 .rowHeader {
   text-align: left;
-  font-weight: 600;
+  font-weight: 700;
+  color: var(--rk-text, #0f172a);
+  border-right: 1px solid var(--rk-border, #e2e8f0);
+  position: sticky;
+  left: 0;
 }
 
 /* Weak highlight across the hovered/selected row and column. */
 .crosshair {
-  background: var(--rk-highlight-weak, #ececec);
-}
-
-.cellButton {
-  all: unset;
-  display: block;
-  width: 100%;
-  cursor: pointer;
-  text-align: center;
-  padding: var(--rk-space-3, 12px) var(--rk-space-4, 16px);
+  background: var(--rk-highlight-weak, #f0f6ff);
 }
 
 .cellButton:focus-visible {
   outline: 2px solid var(--rk-focus-ring, #2563eb);
-  outline-offset: -3px;
+  outline-offset: -2px;
 }
 
 .cellInteractive {
-  padding: 0;
+  cursor: pointer;
 }
 
 /* The hovered cell itself sits a step above its crosshair. */
 .cellHover {
-  background: var(--rk-highlight-mid, #d2d2d2);
+  background: var(--rk-highlight-mid, #dbe8ff);
 }
 
 .cellSelected {
-  background: var(--rk-highlight-strong, #7a7a7a);
+  background: var(--rk-highlight-strong, #2563eb);
   color: var(--rk-highlight-strong-text, #fff);
+  font-weight: 700;
 }
 
 .cellEmpty {
-  color: var(--rk-text-muted, #5c5c5c);
+  color: var(--rk-text-muted, #64748b);
 }
 
 .toggleRow {
@@ -86,8 +105,16 @@
   justify-content: center;
 }
 
+.chevron {
+  transition: transform var(--rk-transition-duration, 140ms) ease;
+}
+
+.chevronUp {
+  transform: rotate(180deg);
+}
+
 .empty {
-  padding: var(--rk-space-5, 24px);
+  padding: var(--rk-space-6, 32px);
   text-align: center;
-  color: var(--rk-text-muted, #5c5c5c);
+  color: var(--rk-text-muted, #64748b);
 }

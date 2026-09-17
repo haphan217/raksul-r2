@@ -15,13 +15,24 @@ body {
 body {
   font-family: var(--rk-font-sans);
   font-size: var(--rk-font-size-base);
-  color: var(--rk-text);
+  line-height: 1.5;
+  color: var(--rk-text-body);
   background: var(--rk-bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
 }
 
 #root {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .visually-hidden {

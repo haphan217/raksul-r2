@@ -4,6 +4,7 @@ import { Button } from "../ui";
 import styles from "./ReusableTable.module.css";
 
 import type { CellAddress, TableColumn, TableRow } from "../../types/pricing";
+import { QUANTITY_COLUMN } from "../../utils/priceTransformer";
 export interface ReusableTableProps {
   columns: TableColumn<TableRow>[];
   data: TableRow[];
@@ -82,20 +83,36 @@ const Cell = memo(function Cell({
   else if (inCrosshair) classes.push(styles.crosshair);
 
   return (
-    <td className={classes.join(" ")}>
-      <button
-        type="button"
-        className={styles.cellButton}
-        aria-pressed={isSelected}
-        onMouseEnter={handleEnter}
-        onMouseLeave={handleLeave}
-        onFocus={handleEnter}
-        onBlur={handleLeave}
-        onClick={handleClick}
-      >
-        {content}
-      </button>
+    <td
+      className={classes.join(" ")}
+      aria-pressed={isSelected}
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+      onFocus={handleEnter}
+      onBlur={handleLeave}
+      onClick={handleClick}
+    >
+      {content}
     </td>
+  );
+});
+
+const Chevron = memo(function Chevron({ up }: { up: boolean }) {
+  return (
+    <svg
+      className={`${styles.chevron} ${up ? styles.chevronUp : ""}`}
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
   );
 });
 
@@ -112,10 +129,9 @@ function ReusableTableBase({
   const [hovered, setHovered] = useState<CellAddress | null>(null);
 
   const toggleExpanded = useCallback(() => setExpanded((v) => !v), []);
-  const handleHover = useCallback(
-    (address: CellAddress | null) => setHovered(address),
-    [],
-  );
+  const handleHover = useCallback((address: CellAddress | null) => {
+    if (address?.columnKey !== QUANTITY_COLUMN) setHovered(address);
+  }, []);
 
   const collapsible = data.length > initialRowCount;
   const visibleRows = useMemo(
@@ -189,6 +205,7 @@ function ReusableTableBase({
             onClick={toggleExpanded}
             aria-expanded={expanded}
           >
+            <Chevron up={expanded} />
             {expanded
               ? "See less"
               : `See more (${data.length - initialRowCount})`}

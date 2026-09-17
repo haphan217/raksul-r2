@@ -1,11 +1,12 @@
 import { useMemo } from "react";
 import type { TableColumn, TableRow } from "../../types/pricing";
 import type { PriceColumnMeta } from "../../utils/priceTransformer";
-import { formatNumber, formatYen } from "../../utils/formatNumber";
+import { formatNumber } from "../../utils/formatNumber";
 import styles from "./priceColumns.module.css";
 
 /**
  * Lifts plain column metadata into renderable table columns.
+ * All formatting and JSX lives here so the transformer stays pure data.
  */
 export function usePriceColumns(
   meta: PriceColumnMeta[],
@@ -14,13 +15,17 @@ export function usePriceColumns(
     () =>
       meta.map((column) => {
         if (column.isRowHeader) {
-          const { key } = column;
           return {
-            key,
-            label: column.label,
+            key: column.key,
+            label: (
+              <span className={styles.cornerLabel}>
+                <span className={styles.cornerTop}>Delivery</span>
+                <span className={styles.cornerMain}>{column.label}</span>
+              </span>
+            ),
             isRowHeader: true,
             render: (row: TableRow) => {
-              const quantity = row[key];
+              const quantity = row[column.key];
               if (typeof quantity !== "number") return null;
               return (
                 <span className={styles.quantity}>
@@ -37,7 +42,7 @@ export function usePriceColumns(
           render: (row: TableRow) => {
             const price = row[column.key];
             if (typeof price !== "number") return null;
-            return <span className={styles.price}>{formatYen(price)}</span>;
+            return <span className={styles.price}>{formatNumber(price)}</span>;
           },
         };
       }),
