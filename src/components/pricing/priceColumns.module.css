@@ -1,0 +1,11 @@
+.quantity {
+  display: inline-flex;
+  align-items: baseline;
+  gap: var(--rk-space-1, 4px);
+  font-weight: 600;
+  color: var(--rk-text, #1a1a1a);
+}
+
+.price {
+  font-variant-numeric: tabular-nums;
+}

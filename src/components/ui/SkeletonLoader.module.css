@@ -1,0 +1,32 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rk-space-2);
+}
+
+.bar {
+  background: linear-gradient(
+    90deg,
+    var(--rk-highlight-weak) 25%,
+    var(--rk-card) 50%,
+    var(--rk-highlight-weak) 75%
+  );
+  background-size: 200% 100%;
+  animation: rk-shimmer 1.2s ease-in-out infinite;
+}
+
+@keyframes rk-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bar {
+    animation: none;
+    background: var(--rk-highlight-weak);
+  }
+}

@@ -1,0 +1,93 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rk-space-4, 16px);
+  width: 100%;
+}
+
+.scroller {
+  width: 100%;
+  overflow-x: auto;
+  background: var(--rk-card, #d9d9d9);
+  padding: var(--rk-space-4, 16px);
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  min-width: 560px;
+  font-size: var(--rk-font-size-base, 14px);
+  color: var(--rk-text, #1a1a1a);
+}
+
+.headCell,
+.cell {
+  border: 1px solid var(--rk-border, #c9c9c9);
+  padding: var(--rk-space-3, 12px) var(--rk-space-4, 16px);
+  background: var(--rk-cell, #fff);
+  text-align: center;
+  white-space: nowrap;
+  transition: background-color var(--rk-transition-duration, 120ms) ease;
+}
+
+.headCell {
+  font-weight: 600;
+}
+
+/* Header of the row-header column. */
+.headCorner {
+  text-align: left;
+}
+
+.rowHeader {
+  text-align: left;
+  font-weight: 600;
+}
+
+/* Weak highlight across the hovered/selected row and column. */
+.crosshair {
+  background: var(--rk-highlight-weak, #ececec);
+}
+
+.cellButton {
+  all: unset;
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  text-align: center;
+  padding: var(--rk-space-3, 12px) var(--rk-space-4, 16px);
+}
+
+.cellButton:focus-visible {
+  outline: 2px solid var(--rk-focus-ring, #2563eb);
+  outline-offset: -3px;
+}
+
+.cellInteractive {
+  padding: 0;
+}
+
+/* The hovered cell itself sits a step above its crosshair. */
+.cellHover {
+  background: var(--rk-highlight-mid, #d2d2d2);
+}
+
+.cellSelected {
+  background: var(--rk-highlight-strong, #7a7a7a);
+  color: var(--rk-highlight-strong-text, #fff);
+}
+
+.cellEmpty {
+  color: var(--rk-text-muted, #5c5c5c);
+}
+
+.toggleRow {
+  display: flex;
+  justify-content: center;
+}
+
+.empty {
+  padding: var(--rk-space-5, 24px);
+  text-align: center;
+  color: var(--rk-text-muted, #5c5c5c);
+}

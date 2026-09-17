@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { fetchPrices, getCached } from "../services/pricingApi";
-import { type PriceTable, transformPrices } from "../utils/priceTransformer";
+import { type PriceTableData, transformPrices } from "../utils/priceTransformer";
 
 import type { PaperSize, PricesResponse } from "../types/pricing";
 interface PricingState {
@@ -11,7 +11,7 @@ interface PricingState {
   error: string | null;
 }
 
-export interface UsePricingDataResult extends PriceTable {
+export interface UsePricingDataResult extends PriceTableData {
   loading: boolean;
   error: string | null;
   refetch: () => void;
