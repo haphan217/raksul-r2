@@ -36,7 +36,7 @@ const Cell = memo(function Cell({
   onHover,
   onSelect,
 }: CellProps) {
-  const content = column.render(row);
+  const content = column.render?.(row) || row[column.key];
 
   const handleEnter = useCallback(
     () => onHover?.({ rowKey: row.key, columnKey: column.key }),
@@ -147,6 +147,7 @@ function ReusableTableBase({
     return <p className={styles.empty}>{emptyMessage}</p>;
   }
 
+  console.log({ columns, data });
   return (
     <div className={styles.wrapper}>
       <div className={styles.scroller}>

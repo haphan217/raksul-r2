@@ -39,7 +39,7 @@ export interface TableColumn<TRow extends TableRow = TableRow> {
   /** Rendered as a row header cell instead of a selectable value cell. */
   isRowHeader?: boolean;
   /** Cell content; `null` marks the intersection as unavailable. */
-  render: (row: TRow) => ReactNode;
+  render?: (row: TRow) => ReactNode;
 }
 
 export interface CellAddress {
