@@ -4,7 +4,7 @@ import { Button } from "@/components/ui";
 import styles from "./ReusableTable.module.css";
 
 import type { CellAddress, TableColumn, TableRow } from "@/types/pricing";
-import { QUANTITY_COLUMN } from "@/utils/priceTransformer";
+
 export interface ReusableTableProps {
   columns: TableColumn<TableRow>[];
   data: TableRow[];
@@ -23,7 +23,7 @@ interface CellProps {
   isHovered: boolean;
   /** Cell sits on the active row or column — the crosshair highlight. */
   inCrosshair: boolean;
-  onHover: (address: CellAddress | null) => void;
+  onHover?: (address: CellAddress | null) => void;
   onSelect?: (address: CellAddress) => void;
 }
 
@@ -39,10 +39,10 @@ const Cell = memo(function Cell({
   const content = column.render(row);
 
   const handleEnter = useCallback(
-    () => onHover({ rowKey: row.key, columnKey: column.key }),
+    () => onHover?.({ rowKey: row.key, columnKey: column.key }),
     [column.key, onHover, row.key],
   );
-  const handleLeave = useCallback(() => onHover(null), [onHover]);
+  const handleLeave = useCallback(() => onHover?.(null), [onHover]);
   const handleClick = useCallback(
     () => onSelect?.({ rowKey: row.key, columnKey: column.key }),
     [column.key, onSelect, row.key],
@@ -85,14 +85,18 @@ const Cell = memo(function Cell({
   return (
     <td
       className={classes.join(" ")}
-      aria-pressed={isSelected}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
-      onFocus={handleEnter}
-      onBlur={handleLeave}
       onClick={handleClick}
     >
-      {content}
+      <button
+        aria-pressed={isSelected}
+        onFocus={handleEnter}
+        onBlur={handleLeave}
+        className={styles.cellButton}
+      >
+        {content}
+      </button>
     </td>
   );
 });
@@ -129,9 +133,6 @@ function ReusableTableBase({
   const [hovered, setHovered] = useState<CellAddress | null>(null);
 
   const toggleExpanded = useCallback(() => setExpanded((v) => !v), []);
-  const handleHover = useCallback((address: CellAddress | null) => {
-    if (address?.columnKey !== QUANTITY_COLUMN) setHovered(address);
-  }, []);
 
   const collapsible = data.length > initialRowCount;
   const visibleRows = useMemo(
@@ -187,7 +188,7 @@ function ReusableTableBase({
                         hovered?.columnKey === column.key
                       }
                       inCrosshair={rowActive || axis?.columnKey === column.key}
-                      onHover={handleHover}
+                      onHover={column.isRowHeader ? undefined : setHovered}
                       onSelect={onSelect}
                     />
                   ))}

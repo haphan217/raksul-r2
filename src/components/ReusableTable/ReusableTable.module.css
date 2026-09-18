@@ -76,13 +76,18 @@
   background: var(--rk-highlight-weak, #f0f6ff);
 }
 
-.cellButton:focus-visible {
-  outline: 2px solid var(--rk-focus-ring, #2563eb);
-  outline-offset: -2px;
+.cellButton {
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-weight: inherit;
+  font-family: inherit;
 }
 
 .cellInteractive {
   cursor: pointer;
+  text-align: center;
 }
 
 /* The hovered cell itself sits a step above its crosshair. */
