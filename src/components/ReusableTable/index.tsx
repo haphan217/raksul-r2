@@ -147,7 +147,6 @@ function ReusableTableBase({
     return <p className={styles.empty}>{emptyMessage}</p>;
   }
 
-  console.log({ columns, data });
   return (
     <div className={styles.wrapper}>
       <div className={styles.scroller}>
