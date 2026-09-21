@@ -29,6 +29,27 @@ export function transformPrices(
   if (!response || !Array.isArray(response.prices)) return EMPTY_PRICE_TABLE;
 
   const entries: PriceEntry[] = response.prices.flat();
+  /** sample entries
+   [
+    {
+      "business_day": 1,
+      "price": 1388,
+      "quantity": 10
+    },
+    {
+      "business_day": 2,
+      "price": 1398,
+      "quantity": 10
+    },
+    ...
+    {
+      "business_day": 1,
+      "price": 1460,
+      "quantity": 100
+    },
+    ...
+   ]
+   */
   if (entries.length === 0) return EMPTY_PRICE_TABLE;
 
   const days = new Set<number>();
@@ -57,10 +78,34 @@ export function transformPrices(
         businessDay: day,
       })),
   ];
+  /** sample columns
+    [{
+      "key": "quantity",
+      "label": "Quantity",
+      "isRowHeader": true
+    },
+    {
+      "key": "d1",
+      "label": "1 Day",
+      "businessDay": 1
+    },...]
+  */
 
   const rows = [...byQuantity.keys()]
     .sort((a, b) => a - b)
     .map((quantity) => byQuantity.get(quantity) as TableRow);
+  /** sample rows
+    [{
+      "key": "q10",
+      "quantity": 10,
+      "d1": 1568,
+      "d2": 1578,
+      "d3": 1588,
+      "d4": 1598,
+      "d5": 1608
+    },...]
+  */
 
+  console.log({ rows, columns });
   return { columns, rows };
 }
