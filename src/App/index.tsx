@@ -76,6 +76,7 @@ function App() {
         <div className={styles.content}>
           <OrderSummary selection={selection} paperSize={paperSize} />
           <PriceTableSection
+            tableName={`Paper size: ${paperSize.toUpperCase()}`}
             columns={columns}
             data={rows}
             loading={loading}

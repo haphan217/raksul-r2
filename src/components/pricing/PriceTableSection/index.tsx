@@ -1,8 +1,8 @@
-import { memo } from 'react';
-import { Button, SkeletonLoader } from '@/components/ui';
-import { ReusableTable } from '@/components/ReusableTable';
-import type { CellAddress, TableColumn, TableRow } from '@/types/pricing';
-import styles from './PriceTableSection.module.css';
+import { memo } from "react";
+import { Button, SkeletonLoader } from "@/components/ui";
+import { ReusableTable } from "@/components/ReusableTable";
+import type { CellAddress, TableColumn, TableRow } from "@/types/pricing";
+import styles from "./PriceTableSection.module.css";
 
 export interface PriceTableSectionProps {
   columns: TableColumn<TableRow>[];
@@ -12,6 +12,7 @@ export interface PriceTableSectionProps {
   selected: CellAddress | null;
   onSelect: (address: CellAddress) => void;
   onRetry: () => void;
+  tableName: string;
 }
 
 const TableSkeleton = memo(function TableSkeleton() {
@@ -28,6 +29,7 @@ function PriceTableSectionBase({
   loading,
   error,
   selected,
+  tableName,
   onSelect,
   onRetry,
 }: PriceTableSectionProps) {
@@ -45,6 +47,7 @@ function PriceTableSectionBase({
 
   return (
     <ReusableTable
+      tableName={tableName}
       columns={columns}
       data={data}
       initialRowCount={5}

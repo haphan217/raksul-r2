@@ -6,6 +6,7 @@ import styles from "./ReusableTable.module.css";
 import type { CellAddress, TableColumn, TableRow } from "@/types/pricing";
 
 export interface ReusableTableProps {
+  tableName: string;
   columns: TableColumn<TableRow>[];
   data: TableRow[];
   /** Rows rendered before "See more" is expanded. */
@@ -36,7 +37,7 @@ const Cell = memo(function Cell({
   onHover,
   onSelect,
 }: CellProps) {
-  const content = column.render?.(row) || row[column.key];
+  const content = column.render?.(row) || row[column.key] || null;
 
   const handleEnter = useCallback(
     () => onHover?.({ rowKey: row.key, columnKey: column.key }),
@@ -53,6 +54,7 @@ const Cell = memo(function Cell({
     return (
       <th
         scope="row"
+        role="rowheader"
         className={`${styles.cell} ${styles.rowHeader} ${
           inCrosshair ? styles.crosshair : ""
         }`}
@@ -67,6 +69,7 @@ const Cell = memo(function Cell({
   if (content === null) {
     return (
       <td
+        role="cell"
         className={`${styles.cell} ${styles.cellEmpty} ${
           inCrosshair ? styles.crosshair : ""
         }`}
@@ -84,6 +87,7 @@ const Cell = memo(function Cell({
 
   return (
     <td
+      role="cell"
       className={classes.join(" ")}
       onMouseEnter={handleEnter}
       onMouseLeave={handleLeave}
@@ -127,6 +131,7 @@ function ReusableTableBase({
   selected = null,
   onSelect,
   caption,
+  tableName,
   emptyMessage = "No data available.",
 }: ReusableTableProps) {
   const [expanded, setExpanded] = useState(false);
@@ -148,71 +153,76 @@ function ReusableTableBase({
   }
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.scroller}>
-        <table className={styles.table}>
-          {caption ? (
-            <caption className="visually-hidden">{caption}</caption>
-          ) : null}
-          <thead>
-            <tr>
-              {columns.map((column) => (
-                <th
-                  key={column.key}
-                  scope="col"
-                  className={`${styles.headCell} ${
-                    column.isRowHeader ? styles.headCorner : ""
-                  } ${axis?.columnKey === column.key ? styles.crosshair : ""}`}
-                >
-                  {column.label}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {visibleRows.map((row) => {
-              const rowActive = axis?.rowKey === row.key;
-              return (
-                <tr key={row.key}>
-                  {columns.map((column) => (
-                    <Cell
-                      key={column.key}
-                      column={column}
-                      row={row}
-                      isSelected={
-                        selected?.rowKey === row.key &&
-                        selected?.columnKey === column.key
-                      }
-                      isHovered={
-                        hovered?.rowKey === row.key &&
-                        hovered?.columnKey === column.key
-                      }
-                      inCrosshair={rowActive || axis?.columnKey === column.key}
-                      onHover={column.isRowHeader ? undefined : setHovered}
-                      onSelect={onSelect}
-                    />
-                  ))}
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-
-      {collapsible ? (
-        <div className={styles.toggleRow}>
-          <Button
-            variant="ghost"
-            onClick={toggleExpanded}
-            aria-expanded={expanded}
-          >
-            <Chevron up={expanded} />
-            {expanded
-              ? "See less"
-              : `See more (${data.length - initialRowCount})`}
-          </Button>
+    <div>
+      <h3 style={{ marginBottom: "4px" }}>{tableName}</h3>
+      <div className={styles.wrapper}>
+        <div className={styles.scroller}>
+          <table role="table" className={styles.table}>
+            {caption ? (
+              <caption className="visually-hidden">{caption}</caption>
+            ) : null}
+            <thead role="rowgroup">
+              <tr role="row">
+                {columns.map((column) => (
+                  <th
+                    key={column.key}
+                    scope="col"
+                    role="columnheader"
+                    className={`${styles.headCell} ${
+                      column.isRowHeader ? styles.headCorner : ""
+                    } ${axis?.columnKey === column.key ? styles.crosshair : ""}`}
+                  >
+                    {column.label}
+                  </th>
+                ))}
+              </tr>
+            </thead>
+            <tbody role="rowgroup">
+              {visibleRows.map((row) => {
+                const rowActive = axis?.rowKey === row.key;
+                return (
+                  <tr key={row.key} role="row">
+                    {columns.map((column) => (
+                      <Cell
+                        key={column.key}
+                        column={column}
+                        row={row}
+                        isSelected={
+                          selected?.rowKey === row.key &&
+                          selected?.columnKey === column.key
+                        }
+                        isHovered={
+                          hovered?.rowKey === row.key &&
+                          hovered?.columnKey === column.key
+                        }
+                        inCrosshair={
+                          rowActive || axis?.columnKey === column.key
+                        }
+                        onHover={column.isRowHeader ? undefined : setHovered}
+                        onSelect={onSelect}
+                      />
+                    ))}
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
-      ) : null}
+        {collapsible ? (
+          <div className={styles.toggleRow}>
+            <Button
+              variant="ghost"
+              onClick={toggleExpanded}
+              aria-expanded={expanded}
+            >
+              <Chevron up={expanded} />
+              {expanded
+                ? "See less"
+                : `See more (${data.length - initialRowCount})`}
+            </Button>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 }

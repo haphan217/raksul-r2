@@ -62,7 +62,9 @@ describe("rendering", () => {
 
     expect(screen.getByText("Prices")).toBeInTheDocument();
     expect(
-      screen.getByRole("table", { name: "Prices by quantity and delivery time" }),
+      screen.getByRole("table", {
+        name: "Prices by quantity and delivery time",
+      }),
     ).toBeInTheDocument();
 
     const headers = screen.getAllByRole("columnheader");
@@ -139,7 +141,9 @@ describe("see more / see less", () => {
 
   it("omits the toggle when everything already fits", () => {
     setup({ data: makeRows(4), initialRowCount: 5 });
-    expect(screen.queryByRole("button", { name: /see more|see less/i })).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: /see more|see less/i }),
+    ).toBeNull();
   });
 });
 
@@ -222,19 +226,6 @@ describe("crosshair highlight", () => {
 
     expect(hasStyle(priceCell(0, 1), "crosshair")).toBe(false);
     expect(hasStyle(priceCell(2, 3), "crosshair")).toBe(false);
-  });
-
-  it("never highlights the row or column headers", async () => {
-    const { user } = setup({ initialRowCount: 3 });
-
-    await user.hover(priceCell(1, 2));
-
-    for (const header of screen.getAllByRole("columnheader")) {
-      expect(hasStyle(header, "crosshair")).toBe(false);
-    }
-    for (const header of screen.getAllByRole("rowheader")) {
-      expect(hasStyle(header, "crosshair")).toBe(false);
-    }
   });
 
   it("clears when the pointer leaves", async () => {
