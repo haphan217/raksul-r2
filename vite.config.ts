@@ -8,8 +8,10 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   test: {
+    // Component suites opt into jsdom with a `@vitest-environment` docblock.
     environment: 'node',
-    include: ['src/**/*.test.ts'],
+    include: ['src/**/*.test.{ts,tsx}'],
+    setupFiles: ['src/test/setup.ts'],
   },
   resolve: {
     alias: {
