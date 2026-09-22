@@ -61,6 +61,70 @@ describe("formatNumber", () => {
     expect(formatNumber(1234567)).not.toContain(".");
     expect(formatNumber(1234567)).not.toContain(" ");
   });
+
+  describe("negative values", () => {
+    it.each([
+      [-5, "-5"],
+      [-999, "-999"],
+      [-1000, "-1,000"],
+      [-4500, "-4,500"],
+      [-1234567, "-1,234,567"],
+    ])("keeps the sign outside the groups: %i", (input, expected) => {
+      expect(formatNumber(input)).toBe(expected);
+    });
+
+    it("groups a negative exactly like its absolute value", () => {
+      expect(formatNumber(-98765)).toBe(`-${formatNumber(98765)}`);
+    });
+
+    it("treats negative zero as zero", () => {
+      expect(formatNumber(-0)).toBe("0");
+    });
+  });
+
+  describe("decimal values", () => {
+    it.each([
+      [0.5, "0.5"],
+      [12.34, "12.34"],
+      [999.99, "999.99"],
+      [1000.5, "1,000.5"],
+      [1213.12232, "1,213.12232"],
+      [1234567.891, "1,234,567.891"],
+      [-1234.5, "-1,234.5"],
+    ])("groups only the integer part of %d", (input, expected) => {
+      expect(formatNumber(input)).toBe(expected);
+    });
+
+    it("never places a separator in the fraction", () => {
+      const fraction = formatNumber(1234.5678901234).split(".")[1];
+      expect(fraction).toBe("5678901234");
+      expect(fraction).not.toContain(",");
+    });
+
+    it("round-trips back to the original number", () => {
+      for (const value of [1234.5, -98765.4321, 0.125, 1000000.001]) {
+        expect(Number(formatNumber(value).replace(/,/g, ""))).toBe(value);
+      }
+    });
+  });
+
+  describe("values with no digits to group", () => {
+    it.each([
+      [Number.NaN, "NaN"],
+      [Number.POSITIVE_INFINITY, "Infinity"],
+      [Number.NEGATIVE_INFINITY, "-Infinity"],
+    ])("passes %s through unmangled", (input, expected) => {
+      expect(formatNumber(input)).toBe(expected);
+    });
+
+    it.each([
+      [1e21, "1e+21"],
+      [1e-7, "1e-7"],
+      [-1e21, "-1e+21"],
+    ])("leaves exponential notation alone: %d", (input, expected) => {
+      expect(formatNumber(input)).toBe(expected);
+    });
+  });
 });
 
 describe("formatYen", () => {
